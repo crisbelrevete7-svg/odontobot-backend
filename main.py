@@ -13,9 +13,16 @@ from firebase_admin import credentials, firestore
 
 load_dotenv()
 
-# Inicializar Firebase Admin (para guardar citas)
+# Inicializar Firebase Admin (con detección automática de ruta)
 try:
-    cred = credentials.Certificate("firebase-adminsdk.json")
+    ruta_nube = "/etc/secrets/firebase-adminsdk.json"
+    ruta_local = "firebase-adminsdk.json"
+    
+    if os.path.exists(ruta_nube):
+        cred = credentials.Certificate(ruta_nube)
+    else:
+        cred = credentials.Certificate(ruta_local)
+        
     firebase_admin.initialize_app(cred)
     db = firestore.client()
     print("✅ Firebase Admin configurado correctamente")
