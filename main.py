@@ -33,15 +33,20 @@ except Exception as e:
 
 app = FastAPI()
 
-# Configurar CORS
+# Configurar CORS (Modificado para producción)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:5173", 
+        "http://127.0.0.1:5173", 
+        "http://localhost:3000",
+        "https://clinica-unefa.web.app",       # Tu hosting de Firebase
+        "https://clinica-unefa.firebaseapp.com" # El dominio alternativo de Firebase
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 class ChatRequest(BaseModel):
     message: str
     historial: List[Dict[str, str]] = []
